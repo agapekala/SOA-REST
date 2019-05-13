@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: agnieszka
+  Date: 11.05.19
+  Time: 17:09
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>Index</title>
+</h:head>
+
+<h:body>
+    <div style="float: left;margin-right: 10px">
+        <h2>Użytkownicy</h2>
+        <h:panelGroup>
+            <h:form>
+                <p><h:commandButton value="Users">
+                    <f:ajax event="click" render="all_users" listener="#{users.restGetUsers}"/>
+                </h:commandButton></p>
+            </h:form>
+        </h:panelGroup>
+
+        <h:panelGroup id="all_users">
+
+        <h3>Wszyscy użytkownicy</h3>
+        <ul>
+            <ui:repeat value="#{users.users}" var="user">
+                <li>
+                    #{user}
+                </li>
+            </ui:repeat>
+        </ul>
+        </h:panelGroup>
+
+    <h:panelGroup>
+        <h:form>
+            <h3>Szukaj użytkownika:</h3>
+            <p>Podaj id użytkownika: <h:inputText value="#{users.user_id}">
+                <f:ajax event="change"/> </h:inputText></p>
+            <p><h:commandButton value="Szukaj">
+                <f:ajax event="click" render="user_data" listener="#{users.restGetUser}"/>
+            </h:commandButton></p>
+            <p><h:commandButton value="Szukaj filmów użytkownika">
+                <f:ajax event="click" render="user_data" listener="#{users.restGetUserMovies}"/>
+            </h:commandButton></p>
+        </h:form>
+    </h:panelGroup>
+    <h:panelGroup id="user_data">
+        <h3>Dane użytkownika:</h3>
+        <p>#{users.ret_user}</p>
+        <h3>Filmy użytkownika:</h3>
+        <ul>
+            <ui:repeat value="#{users.movies}" var="m">
+                <li>
+                    #{m}
+                </li>
+            </ui:repeat>
+        </ul>
+    </h:panelGroup>
+
+        <h:panelGroup id="add_user">
+            <h:form>
+                <h3>Dodaj użytkownika</h3>
+                <p>Id: <h:inputText value="#{users.user_id}">
+                    <f:ajax event="change"/>
+                </h:inputText> </p>
+                <p>Imię: <h:inputText value="#{users.name}">
+                    <f:ajax event="change"/>
+                </h:inputText> </p>
+                <p>Wiek: <h:inputText value="#{users.age}">
+                    <f:ajax event="change"/>
+                </h:inputText> </p>
+                <p>Awatar: <h:inputText value="#{users.avatar}">
+                    <f:ajax event="change"/>
+                </h:inputText> </p>
+
+                <h:commandButton value="Dodaj">
+                    <f:ajax event="click" render="add_user" listener="#{users.restAddUser}"/>
+                </h:commandButton>
+                <p>Komunikat: #{users.message}</p>
+            </h:form>
+        </h:panelGroup>
+
+        <h:panelGroup id="add_user_movie">
+            <h:form>
+            <h3>Dodaj film do użytkownika</h3>
+            <p>Id użytkownika: <h:inputText value="#{users.user_id}">
+                <f:ajax event="change"/>
+            </h:inputText> </p>
+
+            <p>Id filmu: <h:inputText value="#{users.movie_id}">
+                <f:ajax event="change"/>
+            </h:inputText> </p>
+            <p>Tytuł: <h:inputText value="#{users.title}">
+                <f:ajax event="change"/>
+            </h:inputText> </p>
+            <h:commandButton value="Dodaj">
+                <f:ajax listener="#{users.restAddMovie}" event="click" render="add_user_movie"/>
+            </h:commandButton>
+
+            <p>Komunikat #{users.message}</p>
+            </h:form>
+        </h:panelGroup>
+
+        <h:panelGroup id="delete_user">
+            <h:form>
+                <h3>Usuń użytkownika</h3>
+                <p>Id użytkownika: <h:inputText value="#{users.user_id}">
+                    <f:ajax event="change"/>
+                </h:inputText> </p>
+
+                <h:commandButton value="Usuń">
+                    <f:ajax event="click" render="delete_user" listener="#{users.restDeleteUser}"/>
+                </h:commandButton>
+
+                <p>Komunikat: #{users.message}</p>
+            </h:form>
+        </h:panelGroup>
+    </div>
+
+
+
+
+    <div style="float: left; margin-right: 10px">
+        <h2>Filmy</h2>
+        <h:panelGroup>
+            <h:form>
+                <p><h:commandButton value="Movies">
+                    <f:ajax event="click" render="all_movies" listener="#{movies.restGetMovies}"/>
+                </h:commandButton> </p>
+            </h:form>
+        </h:panelGroup>
+
+        <h:panelGroup id="all_movies">
+            <h2>Wszystkie filmy</h2>
+            <ul>
+                <ui:repeat value="#{movies.movies}" var="movie">
+                    <li>
+                        #{movie}
+                    </li>
+                </ui:repeat>
+            </ul>
+        </h:panelGroup>
+
+        <h:panelGroup>
+            <h:form>
+                <h3>Szukaj filmu</h3>
+                <p>Podaj id filmu: <h:inputText value="#{movies.movie_id}">
+                    <f:ajax event="change"/> </h:inputText></p>
+                <p><h:commandButton value="Szukaj po id">
+                    <f:ajax event="click" render="movie_data" listener="#{movies.restGetMovie}"/>
+                </h:commandButton></p>
+
+                <p>Podaj tytuł filmu: <h:inputText value="#{movies.title}">
+                    <f:ajax event="change"/> </h:inputText></p>
+                <p><h:commandButton value="Szukaj po tytule">
+                    <f:ajax event="click" render="movie_data" listener="#{movies.restGetMovieByTitle}"/>
+                </h:commandButton></p>
+            </h:form>
+        </h:panelGroup>
+
+        <h:panelGroup id="movie_data">
+            <h3>Dane filmu:</h3>
+            <p>#{movies.ret_movie}</p>
+        </h:panelGroup>
+
+        <h:panelGroup id="add_movie">
+            <h:form>
+                <h3>Dodaj film</h3>
+                <p>Id: <h:inputText value="#{movies.movie_id}">
+                    <f:ajax event="change"/>
+                </h:inputText> </p>
+                <p>Tytuł: <h:inputText value="#{movies.title}">
+                    <f:ajax event="change"/>
+                </h:inputText> </p>
+                <h:commandButton value="Dodaj">
+                    <f:ajax listener="#{movies.addMovie}" event="click" render="add_movie"/>
+                </h:commandButton>
+
+                <p>Komunikat: #{movies.message}</p>
+            </h:form>
+        </h:panelGroup>
+
+        <h:panelGroup id="update_movie">
+            <h:form>
+                <h3>Edytuj film</h3>
+                <p>Id: <h:inputText value="#{movies.movie_id}">
+                    <f:ajax event="change"/>
+                </h:inputText> </p>
+                <p>Tytuł: <h:inputText value="#{movies.title}">
+                    <f:ajax event="change"/>
+                </h:inputText> </p>
+                <p>URI: <h:inputText value="#{movies.uri}">
+                    <f:ajax event="change"/>
+                </h:inputText> </p>
+                <h:commandButton value="Edytuj">
+                    <f:ajax listener="#{movies.restUpdateMovie}" event="click" render="update_movie"/>
+                </h:commandButton>
+
+                <p>Komunikat: #{movies.message}</p>
+            </h:form>
+        </h:panelGroup>
+
+        <h:panelGroup id="delete_movie">
+            <h:form>
+                <h3>Usuń film</h3>
+                <p>Id: <h:inputText value="#{movies.movie_id}">
+                    <f:ajax event="change"/>
+                </h:inputText> </p>
+                <h:commandButton value="Usuń">
+                    <f:ajax listener="#{movies.restDeleteMovie}" event="click" render="delete_movie"/>
+                </h:commandButton>
+
+                <p>Komunikat: #{movies.message}</p>
+            </h:form>
+        </h:panelGroup>
+    </div>
+</h:body>
+
+</html>
